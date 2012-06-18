@@ -1,0 +1,26 @@
+Parse int, double and string as type, provide packages and implement the
+changed datastructures. As extension implemented only as slow tie methods,
+which is backwards compatible, in core with faster and smaller structures.
+
+Use those 3 new native types in declarations of lexical scalars, arrays and
+hashes, but not in globals.
+
+    my int $i;         # no magic allowed, with type-optim and type checks.
+    my double $d;      #               -"-
+    our string $s;     #               -"-
+
+    my int @array;     # typed IV array, with type-optim. and type checks.
+    my int @array[20]; # typed and fixed-sized, with type and size checks.
+
+    my string %hash;   # typed PV hash, with type-optim. and type checks
+
+    our string %hash :constant = {'foo' => 'bar'};
+                       # perfect hash with type-optim. and type checks
+
+This package does NOT handle attributes, as there is no compile-time
+attribute hook for my lexicals yet.
+So optimizations for :constant or :read-only are deferred to later.
+
+
+Possible constant syntax to replace attributes:
+    my constant string %hash;
