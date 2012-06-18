@@ -1,26 +1,52 @@
-Parse int, double and string as type, provide packages and implement the
-changed datastructures. As extension implemented only as slow tie methods,
-which is backwards compatible, in core with faster and smaller structures.
+NAME
+    coretypes - my int, double, string $@%variables
 
-Use those 3 new native types in declarations of lexical scalars, arrays and
-hashes, but not in globals.
+DESCRIPTION
+    Parse int, double and string as type, provide packages and implement the
+    changed datastructures.
 
-    my int $i;         # no magic allowed, with type-optim and type checks.
-    my double $d;      #               -"-
-    our string $s;     #               -"-
+    We have to support two different implementations:
 
-    my int @array;     # typed IV array, with type-optim. and type checks.
-    my int @array[20]; # typed and fixed-sized, with type and size checks.
+    As backwards compatible CPAN extension implemented only as slow tie
+    methods, and 2nd in core with patched parser hooks targetting 5.18 and
+    faster and smaller structures.
 
-    my string %hash;   # typed PV hash, with type-optim. and type checks
+    Use those 3 new native types in declarations of lexical scalars, arrays
+    and hashes, but not in globals.
 
-    our string %hash :constant = {'foo' => 'bar'};
-                       # perfect hash with type-optim. and type checks
+        my int $i;         # no magic allowed, with type-optim and type checks.
+        my double $d;      #               -"-
+        our string $s;     #               -"-
 
-This package does NOT handle attributes, as there is no compile-time
-attribute hook for my lexicals yet.
-So optimizations for :constant or :read-only are deferred to later.
+        my int @array;     # typed IV array, with type-optim. and type checks.
+        my int @array[20]; # typed and fixed-sized, with type and size checks.
 
+        my string %hash;   # typed PV hash, with type-optim. and type checks
 
-Possible constant syntax to replace attributes:
-    my constant string %hash;
+        our string %hash :constant = {'foo' => 'bar'};
+                           # perfect hash with type-optim. and type checks
+
+    This package does NOT handle attributes, as there is no compile-time
+    attribute hook for my lexicals yet. So optimizations for :constant or
+    :read-only are deferred to later.
+
+    Possible constant syntax to replace attributes:
+
+        my constant string %hash;
+
+SEE ALSO
+    types for the PP ("pure-perl") implementation of type checks.
+
+    typesafety for the PP implementation of type inference and type-checks.
+
+    Devel::TypeCheck for the PP implementation of general type inference to
+    be used for sub arguments.
+
+AUTHOR
+    Reini Urban
+
+COPYRIGHT AND LICENSE
+    This library is free software under the same terms as perl itself.
+
+    Copyright (c) 2012 Reini Urban
+
