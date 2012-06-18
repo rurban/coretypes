@@ -78,10 +78,10 @@ CHECK {
   # compiled into XS
   if ($coretypes::_PERL_CORE) {
     # not much to do. just check the patch or version
-    die "core parsing and data structures not yet implemented";
+    warn "core parsing and data structures not yet implemented";
   } else {
     # start the Devel::Declare and tie dance
-    die "non-core Devel::Declare and Tie not yet implemented";
+    warn "non-core Devel::Declare and Tie not yet implemented";
   }
 
   # maybe do type checks using types now
