@@ -3,7 +3,7 @@ our $VERSION = '0.01_01';
 
 =head1 NAME
 
-coretypes - my int, double, string $@%variables
+coretypes - my [const] int, double, string $@%variables
 
 =head1 DESCRIPTION
 
@@ -18,6 +18,7 @@ smaller structures.
 
 Use those 3 new native types in declarations of lexical scalars, arrays and
 hashes, but not in globals.
+Add a new lexical type qualifier C<const>, see L<https://github.com/rurban/perl/commits/typed/ro>
 
     my int $i;         # no magic allowed, with type-optim and type checks.
     my double $d;      #               -"-
@@ -25,27 +26,40 @@ hashes, but not in globals.
 
     my int @array;     # typed IV array, with type-optim. and type checks.
     my int @array[20]; # typed and fixed-sized, with type and size checks.
+    my const int @array; # typed IV array, with better type-optim. and type checks.
 
     my string %hash;   # typed PV hash, with type-optim. and type checks
 
-    our string %hash :constant = {'foo' => 'bar'};
+    our const string %hash = {'foo' => 'bar'};
                        # perfect hash with type-optim. and type checks
 
 This package does NOT handle attributes, as there is no compile-time
-attribute hook for my lexicals yet.
-So optimizations for :constant or :read-only are deferred to later.
-
-Possible constant syntax to replace attributes:
-
-    my constant string %hash;
+attribute hook for my lexicals yet, and attribute parsing and handling is unstable
+and even considered dangerous (Attribute::Handler evals them).
+Type qualifiers, such as C<const> or C<unsigned> can be parsed upfront as in C,
+or rely on an additional C<CHECK_*_ATTRIBUTES> hook.
 
 =head1 SEE ALSO
 
-L<types> for the PP (C<pure-perl>) implementation of type checks.
+L<types> for the PP (C<pure-perl>) old implementation of type checks.
 
-L<typesafety> for the PP implementation of type inference and type-checks.
+L<typesafety> for a PP implementation of type inference and type-checks.
 
 L<Devel::TypeCheck> for the best PP implementation of general type inference.
+
+L<https://github.com/rurban/perl/commits/typed/ro> for the const type qualifier.
+
+L<https://github.com/rurban/perl/commits/typed/av> for typed arrays.
+
+L<https://github.com/rurban/perl/commits/typed/hv> for typed hashes.
+
+L<https://github.com/rurban/perl/commits/typed/ph> for perfect hashes.
+
+L<https://github.com/rurban/perl/commits/typed/ck> for fast internal
+type checks and optimizations.
+
+L<https://github.com/rurban/perl/commits/typed/sv> for typed scalars.
+
 
 =head1 AUTHOR
 
