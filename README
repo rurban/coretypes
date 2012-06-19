@@ -1,5 +1,5 @@
 NAME
-    coretypes - my int, double, string $@%variables
+    coretypes - my [const] int, double, string $@%variables
 
 DESCRIPTION
     Parse int, double and string as type, provide packages and implement the
@@ -12,7 +12,8 @@ DESCRIPTION
     faster and smaller structures.
 
     Use those 3 new native types in declarations of lexical scalars, arrays
-    and hashes, but not in globals.
+    and hashes, but not in globals. Add a new lexical type qualifier
+    "const", see <https://github.com/rurban/perl/commits/typed/ro>
 
         my int $i;         # no magic allowed, with type-optim and type checks.
         my double $d;      #               -"-
@@ -20,27 +21,40 @@ DESCRIPTION
 
         my int @array;     # typed IV array, with type-optim. and type checks.
         my int @array[20]; # typed and fixed-sized, with type and size checks.
+        my const int @array; # typed IV array, with better type-optim. and type checks.
 
         my string %hash;   # typed PV hash, with type-optim. and type checks
 
-        our string %hash :constant = {'foo' => 'bar'};
+        our const string %hash = {'foo' => 'bar'};
                            # perfect hash with type-optim. and type checks
 
     This package does NOT handle attributes, as there is no compile-time
-    attribute hook for my lexicals yet. So optimizations for :constant or
-    :read-only are deferred to later.
-
-    Possible constant syntax to replace attributes:
-
-        my constant string %hash;
+    attribute hook for my lexicals yet, and attribute parsing and handling
+    is unstable and even considered dangerous (Attribute::Handler evals
+    them). Type qualifiers, such as "const" or "unsigned" can be parsed
+    upfront as in C, or rely on an additional "CHECK_*_ATTRIBUTES" hook.
 
 SEE ALSO
-    types for the PP ("pure-perl") implementation of type checks.
+    types for the PP ("pure-perl") old implementation of type checks.
 
-    typesafety for the PP implementation of type inference and type-checks.
+    typesafety for a PP implementation of type inference and type-checks.
 
-    Devel::TypeCheck for the PP implementation of general type inference to
-    be used for sub arguments.
+    Devel::TypeCheck for the best PP implementation of general type
+    inference.
+
+    <https://github.com/rurban/perl/commits/typed/ro> for the const type
+    qualifier.
+
+    <https://github.com/rurban/perl/commits/typed/av> for typed arrays.
+
+    <https://github.com/rurban/perl/commits/typed/hv> for typed hashes.
+
+    <https://github.com/rurban/perl/commits/typed/ph> for perfect hashes.
+
+    <https://github.com/rurban/perl/commits/typed/ck> for fast internal type
+    checks and optimizations.
+
+    <https://github.com/rurban/perl/commits/typed/sv> for typed scalars.
 
 AUTHOR
     Reini Urban
