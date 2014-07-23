@@ -1,13 +1,13 @@
 package coretypes;
-our $VERSION = '0.01_01';
+our $VERSION = '0.01_02';
 
 =head1 NAME
 
-coretypes - my [const] int, double, string $@%variables
+coretypes - declare my [const] int, num, str $@%variables
 
 =head1 DESCRIPTION
 
-Parse int, double and string as type, provide packages and implement the
+Parse int, num and str as types, provide packages and implement the
 changed datastructures.
 
 We have to support two different implementations:
@@ -21,16 +21,16 @@ hashes, but not in globals.
 Add a new lexical type qualifier C<const>, see L<https://github.com/rurban/perl/commits/typed/ro>
 
     my int $i;         # no magic allowed, with type-optim and type checks.
-    my double $d;      #               -"-
-    our string $s;     #               -"-
+    my num $d;      #               -"-
+    our str $s;     #               -"-
 
     my int @array;     # typed IV array, with type-optim. and type checks.
     my int @array[20]; # typed and fixed-sized, with type and size checks.
     my const int @array; # typed IV array, with better type-optim. and type checks.
 
-    my string %hash;   # typed PV hash, with type-optim. and type checks
+    my str %hash;   # typed PV hash, with type-optim. and type checks
 
-    our const string %hash = {'foo' => 'bar'};
+    our const str %hash = {'foo' => 'bar'};
                        # perfect hash with type-optim. and type checks
 
 This package does NOT handle attributes, as there is no compile-time
@@ -77,7 +77,8 @@ Copyright (c) 2012 Reini Urban
 
 CHECK {
 
-  $main::int::coretypes = $main::double::coretypes = $main::string::coretypes = $VERSION;
+  $::int::coretypes = $::num::coretypes = $::str::coretypes = $VERSION;
+  return;
 
   # PERL_CORE only set during building
   if ($ENV{PERL_CORE}) {

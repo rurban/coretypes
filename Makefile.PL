@@ -12,7 +12,7 @@ WriteMakefile
    'PREREQ_PM'	=>
    {
      ($ENV{PERL_CORE} ? () : (
-	'Devel::Declare' => 0,
+	#'Devel::Declare' => 0,
       ))
    },
    ABSTRACT_FROM => 'coretypes.pm',
